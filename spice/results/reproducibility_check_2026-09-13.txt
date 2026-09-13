@@ -1,0 +1,12 @@
+EXP1 spot checks (fresh vs bundled):
+  VDD=1.80 V: fresh=1.3332e+09  bundled=1.3332e+09  MATCH
+  VDD=0.50 V: fresh=4.4400e+05  bundled=4.4400e+05  MATCH
+  VDD=0.30 V: fresh=6.7391e+03  bundled=6.7391e+03  MATCH
+EXP2 scissors spot checks (0.30 V, cool vs hot):
+  0.30 V @ 27 C: fresh=6.7391e+03 Hz
+  0.30 V @ 85 C: fresh=8.2214e+04 Hz
+  hot speedup = 12.2x (bundled dataset: 12.2x)  MATCH
+EXP3 Vth spot check (VBS = 0):
+  Vth(fresh) = 0.6926 V   bundled = 0.6926 V   MATCH
+
+REPRODUCIBILITY: 5/5 spot checks match the bundled dataset

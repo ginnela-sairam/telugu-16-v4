@@ -1,0 +1,154 @@
+# Expected Output — T-16 V4.1 Verification Suite
+# Run: bash run_sim.sh
+# All four tests below must print PASSED.
+# (TEST 4's self-clocked phase runs ~1 minute — patience!)
+
+VCD info: dumpfile build/tb_t16_soc.vcd opened for output.
+
+=====================================================
+  T-16 V4.1  |  TEST 1: Fibonacci on GPIO
+  Simulator: Icarus Verilog
+=====================================================
+  Program prints the first 10 Fibonacci numbers
+  onto the 16 output pins, then halts.
+
+  Reset released - the CPU is running its program...
+  [ OK ] GPIO write #1 = 0x0001  (Fibonacci #1)
+  [ OK ] GPIO write #2 = 0x0001  (Fibonacci #2)
+  [ OK ] GPIO write #3 = 0x0002  (Fibonacci #3)
+  [ OK ] GPIO write #4 = 0x0003  (Fibonacci #4)
+  [ OK ] GPIO write #5 = 0x0005  (Fibonacci #5)
+  [ OK ] GPIO write #6 = 0x0008  (Fibonacci #6)
+  [ OK ] GPIO write #7 = 0x000d  (Fibonacci #7)
+  [ OK ] GPIO write #8 = 0x0015  (Fibonacci #8)
+  [ OK ] GPIO write #9 = 0x0022  (Fibonacci #9)
+  [ OK ] GPIO write #10 = 0x0037  (Fibonacci #10)
+
+  [ OK ] CPU reached HALT after 68 clock cycles.
+  [ OK ] GPIO was written exactly 10 times.
+
+  ==============================================
+   *** TEST 1 PASSED - T-16 COMPUTES CORRECTLY ***
+  ==============================================
+
+tb/tb_t16_soc.v:130: $finish called at 696000 (1ps)
+
+VCD info: dumpfile build/tb_t16_isa.vcd opened for output.
+
+=====================================================
+  T-16 V4.1  |  TEST 2: full ISA coverage
+  Every instruction runs; results land in RAM.
+=====================================================
+
+  Reset released - running the ISA exercise program...
+  [ OK ] CPU reached HALT after 59 clock cycles.
+  --- RAM signature check ---
+  [ OK ] RAM[0] = 0x0011
+  [ OK ] RAM[1] = 0x000a
+  [ OK ] RAM[2] = 0x0008
+  [ OK ] RAM[3] = 0x000e
+  [ OK ] RAM[4] = 0x0006
+  [ OK ] RAM[5] = 0x000c
+  [ OK ] RAM[6] = 0x0ff0
+  [ OK ] RAM[7] = 0xfff0
+  [ OK ] RAM[8] = 0x0011
+  [ OK ] RAM[9] = 0xa5a5
+  [ OK ] RAM[10] = 0x0077
+  --- GPIO magic check ---
+  [ OK ] GPIO = 0x600D  ('GOOD')  - shifts and OR built it
+
+  ================================================
+   *** TEST 2 PASSED - ALL 14 INSTRUCTIONS OK ***
+  ================================================
+
+tb/tb_t16_isa.v:120: $finish called at 606000 (1ps)
+
+VCD info: dumpfile build/tb_t16_pbit.vcd opened for output.
+
+=====================================================
+  T-16 V4.1  |  TEST 3: P-bit thermal-adaptive system
+  Tests: TIMER, SENSOR, P-bit, WAIT sleep, wake-up
+=====================================================
+
+  --- PHASE 1: slow ring oscillator (a COOL chip) ---
+  Expect: ECO mode (P=0), real sleep, wake on
+  heartbeat, GPIO = 0xEC01 (eco + awake receipt).
+  [ OK ] PHASE 1: CPU reached HALT after 32777 cycles
+         (slept through most of them - that is eco mode).
+  [ OK ] RAM[0] (TIMER snapshot) = 0x0004
+  [ OK ] RAM[1] (SENSOR snapshot) = 0x0001  (slow ring -> cool)
+  [ OK ] RAM[2] (P-bit readback) = 0x0000  (eco mode chosen)
+  [ OK ] CPU entered WAIT sleep - the power saver works.
+  [ OK ] CPU woke on the TIMER[15] heartbeat.
+  [ OK ] GPIO = 0xEC01  (ECO marker + the wake-up receipt)
+
+  --- PHASE 2: fast ring oscillator (a HOT chip) ---
+  Expect: TURBO mode (P=1), NO sleep, GPIO = 0x700C
+  (turbo marker + raced-on receipt).
+  [ OK ] PHASE 2: CPU reached HALT after 37 cycles
+  [ OK ] RAM[1] (SENSOR snapshot) = 0x0003  (fast ring -> hot)
+  [ OK ] RAM[2] (P-bit readback) = 0x0001  (turbo mode chosen)
+  [ OK ] CPU never slept - turbo ignores the WAIT request.
+  [ OK ] GPIO = 0x700C  (TURB marker + the raced-on receipt)
+
+  ================================================
+   *** TEST 3 PASSED - P-BIT SYSTEM WORKS ***
+   *** eco sleeps, turbo races, both decide ***
+   *** correctly from the sensor reading     ***
+  ================================================
+
+tb/tb_t16_pbit.v:238: $finish called at 328176000 (1ps)
+
+VCD info: dumpfile build/tb_t16_silicon.vcd opened for output.
+
+=====================================================
+  T-16 V4.1  |  TEST 4: the SILICON configuration
+  Baked ROM + real sky130 ring + self-clock mode
+=====================================================
+
+  --- PHASE A: baked program, external clock (clksel=0) ---
+  Expect: Fibonacci on GPIO (from the BAKED words),
+  then HALT. The ring runs free on the side.
+  [ OK ] GPIO write #1 = 0x0001  (Fibonacci #1)
+  [ OK ] GPIO write #2 = 0x0001  (Fibonacci #2)
+  [ OK ] GPIO write #3 = 0x0002  (Fibonacci #3)
+  [ OK ] GPIO write #4 = 0x0003  (Fibonacci #4)
+  [ OK ] GPIO write #5 = 0x0005  (Fibonacci #5)
+  [ OK ] GPIO write #6 = 0x0008  (Fibonacci #6)
+  [ OK ] GPIO write #7 = 0x000d  (Fibonacci #7)
+  [ OK ] GPIO write #8 = 0x0015  (Fibonacci #8)
+  [ OK ] GPIO write #9 = 0x0022  (Fibonacci #9)
+  [ OK ] GPIO write #10 = 0x0037  (Fibonacci #10)
+  [ OK ] PHASE A: CPU reached HALT after 68 cycles
+         using the BAKED program words only.
+  [ OK ] PHASE A: all 10 Fibonacci numbers correct.
+  [ OK ] PHASE A: final GPIO = 55 (0x0037) - last Fibonacci.
+  [ OK ] PHASE A: ring oscillator alive (109 rising edges so far).
+
+  --- PHASE B: SELF-CLOCKED (clksel=1, no external clock) ---
+  The CPU clock is now RO/32 straight from the ring.
+  Expect: Fibonacci again, then HALT - driven purely by
+  the chip's own physics.
+  [ OK ] GPIO write #1 = 0x0001  (Fibonacci #1)
+  [ OK ] GPIO write #2 = 0x0001  (Fibonacci #2)
+  [ OK ] GPIO write #3 = 0x0002  (Fibonacci #3)
+  [ OK ] GPIO write #4 = 0x0003  (Fibonacci #4)
+  [ OK ] GPIO write #5 = 0x0005  (Fibonacci #5)
+  [ OK ] GPIO write #6 = 0x0008  (Fibonacci #6)
+  [ OK ] GPIO write #7 = 0x000d  (Fibonacci #7)
+  [ OK ] GPIO write #8 = 0x0015  (Fibonacci #8)
+  [ OK ] GPIO write #9 = 0x0022  (Fibonacci #9)
+  [ OK ] GPIO write #10 = 0x0037  (Fibonacci #10)
+  [ OK ] PHASE B: CPU reached HALT - SELF-CLOCKED!
+         (No external clock drove a single CPU edge.)
+  [ OK ] PHASE B: all 10 Fibonacci numbers correct again.
+  [ OK ] PHASE B: final GPIO = 55 - same program, same answer.
+  [ OK ] Ring oscillator total rising edges: 2288
+         (each one is the physics heartbeat of your chip)
+
+  ================================================
+   *** TEST 4 PASSED - SILICON CONFIG WORKS ***
+   *** baked ROM, real ring, self-clocked CPU ***
+  ================================================
+
+tb/tb_t16_silicon.v:226: $finish called at 146451000 (1ps)

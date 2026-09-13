@@ -1,0 +1,18 @@
+* SKY130 minimal tt-corner library (curated for the TELUGU T-16)
+*
+* A self-contained, redistributable subset of the Apache-2.0 licensed
+* SkyWater sky130 PDK model files: just enough for the nfet_01v8 and
+* pfet_01v8 devices the T-16 experiments use. Include this file from
+* your ngspice deck and instantiate the subcircuits:
+*
+*   XN1 d g s b sky130_fd_pr__nfet_01v8 w=1 l=0.15
+*   XP1 d g s b sky130_fd_pr__pfet_01v8 w=2 l=0.15
+*
+* (remember .option scale=1.0u so w/l are in micrometers)
+*
+* Files: (c) 2020 The SkyWater PDK Authors, Apache-2.0.
+.include "../../models/parameters/lod.spice"
+.include "../../models/parameters/invariant.spice"
+.include "../../models/parameters/typical.spice"
+.include "../../cells/nfet_01v8/sky130_fd_pr__nfet_01v8__tt.pm3.spice"
+.include "../../cells/pfet_01v8/sky130_fd_pr__pfet_01v8__tt.pm3.spice"

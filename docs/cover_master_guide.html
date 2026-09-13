@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    @page { size: 794px 1123px; margin: 0; }
+    :root {
+      --c-bg: #0a1628;        /* deep blue night sky */
+      --c-accent: #4da8da;    /* luminous bright blue */
+      --c-text: #e8f0f8;      /* cool white */
+      --c-muted: #7a9bb8;     /* blue-gray */
+      --c-glow: #2d7ab3;      /* mid blue glow */
+    }
+    html, body {
+      margin: 0; padding: 0;
+      width: 794px; height: 1123px;
+      background: var(--c-bg);
+      color: var(--c-text);
+      font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    }
+    @media screen {
+      html { height: auto; display: flex; justify-content: center; min-height: 100vh; background: var(--c-bg); }
+      body { transform-origin: top center; scale: min(1, calc(100vw / 794), calc(100vh / 1123)); margin: 0 auto; box-shadow: 0 0 60px rgba(0,0,0,0.35); }
+    }
+    .cover { width: 794px; height: 1123px; position: relative; box-sizing: border-box; }
+
+    /* Layer 1 - background glow, clipped */
+    .layer-bg {
+      position: absolute; inset: 0; overflow: hidden; z-index: 1;
+    }
+    .glow-a {
+      position: absolute; left: 0px; top: 0px;
+      width: 520px; height: 520px;
+      background: radial-gradient(circle at 30% 30%, rgba(45,122,179,0.16), rgba(45,122,179,0) 65%);
+    }
+    .glow-b {
+      position: absolute; right: 0px; bottom: 0px;
+      width: 560px; height: 560px;
+      background: radial-gradient(circle at 70% 70%, rgba(45,122,179,0.13), rgba(45,122,179,0) 65%);
+    }
+
+    /* Layer 2 - luminous rectangular frame */
+    .layer-frame { position: absolute; inset: 0; z-index: 2; }
+    .frame {
+      position: absolute;
+      left: 60px; right: 60px; top: 80px; bottom: 80px;
+      border: 2px solid var(--c-accent);
+      box-shadow: 0 0 24px rgba(77,168,218,0.18), inset 0 0 24px rgba(77,168,218,0.08);
+    }
+
+    /* Layer 3 - content */
+    .layer-content { position: absolute; inset: 0; z-index: 3; }
+    .kicker {
+      position: absolute; left: 110px; top: 135px;
+      font-size: 11pt; font-weight: 300;
+      color: var(--c-accent);
+      letter-spacing: 5px; text-transform: uppercase;
+    }
+    .title {
+      position: absolute; left: 110px; top: 236px;
+      font-family: 'Playfair Display', 'Noto Serif SC', serif;
+      font-size: 50pt; font-weight: 900; line-height: 1.15;
+      color: var(--c-text); max-width: 580px;
+      text-shadow: 0 0 30px rgba(77,168,218,0.35);
+    }
+    .summary {
+      position: absolute; left: 110px; top: 505px;
+      font-size: 15pt; font-weight: 300; line-height: 1.7;
+      color: var(--c-muted); max-width: 520px;
+    }
+    .org {
+      position: absolute; left: 110px; top: 745px;
+      font-size: 18pt; font-weight: 500; color: var(--c-text);
+    }
+    .org-sub {
+      position: absolute; left: 110px; top: 790px;
+      font-size: 11pt; font-weight: 300; color: var(--c-muted);
+      letter-spacing: 1px; line-height: 1.6; max-width: 520px;
+    }
+    .date {
+      position: absolute; left: 110px; top: 968px;
+      font-size: 10pt; font-weight: 300; color: var(--c-muted);
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <div class="layer-bg">
+      <div class="glow-a"></div>
+      <div class="glow-b"></div>
+    </div>
+    <div class="layer-frame">
+      <div class="frame"></div>
+    </div>
+    <div class="layer-content">
+      <div class="kicker">Version 4.1 &middot; The Complete Master Guide</div>
+      <div class="title">TELUGU<br>T-16</div>
+      <div class="summary">
+        A 16-bit open-source processor for the SkyWater 130&nbsp;nm PDK:
+        one verified CPU, an on-die ring oscillator, a self-clocked heart,
+        and a two-day path from Ubuntu terminal to GDS silicon layout.
+        Every number in this book was re-measured, not hoped.
+      </div>
+      <div class="org">Designed by Sairam Ginnela</div>
+      <div class="org-sub">
+        16-bit ISA &middot; 14 instructions &middot; P-bit thermal control &middot; 4 passing test suites<br>
+        Apache-2.0 &middot; open-source EDA: Icarus, GTKWave, Yosys, OpenLane, ngspice
+      </div>
+      <div class="date">September 2026 &middot; Re-verified Edition</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+* ============================================================================
+*  ro_vdd_sweep.spice — ONE ring-oscillator point, run by hand (V4.1)
+* ----------------------------------------------------------------------------
+*  This little deck runs the 15-inverter ring at ONE voltage (VDD=1.8 V)
+*  so you can see the oscillation with your own eyes, interactively.
+*
+*  The FULL sweep (0.10 V ... 1.80 V, 19 points, the "heart curve")
+*  is driven by the Python script, which knows how long each voltage
+*  needs to simulate and how to measure the frequency:
+*
+*      python3 run_experiments.py            (all three experiments)
+*      python3 run_experiments.py --only 1   (just the VDD sweep)
+*
+*  Project : TELUGU T-16 V4 | License : Apache-2.0
+*  (sky130 model files (c) 2020 The SkyWater PDK Authors, Apache-2.0)
+* ============================================================================
+
+.title T-16 ring oscillator - single point demo
+
+* The bundled real sky130 models (tt corner). No PDK install needed.
+.include "sky130_models/models/corners/tt_mini.spice"
+
+.option scale=1.0u
+.temp 27
+
+* ---- supply: change this number and re-run to explore! -------------------
+.param VDD=1.8
+Vdd vdd 0 {VDD}
+
+* ---- one sky130 inverter (PMOS pulls up, NMOS pulls down) ---------------
+.subckt t16_inv a y vdd
+XN y a 0 0 sky130_fd_pr__nfet_01v8 w=1 l=0.15
+XP y a vdd vdd sky130_fd_pr__pfet_01v8 w=2 l=0.15
+.ends
+
+* ---- 15 inverters in a ring (odd number = it oscillates) -----------------
+Xi1  n1  n2  vdd t16_inv
+Xi2  n2  n3  vdd t16_inv
+Xi3  n3  n4  vdd t16_inv
+Xi4  n4  n5  vdd t16_inv
+Xi5  n5  n6  vdd t16_inv
+Xi6  n6  n7  vdd t16_inv
+Xi7  n7  n8  vdd t16_inv
+Xi8  n8  n9  vdd t16_inv
+Xi9  n9  n10 vdd t16_inv
+Xi10 n10 n11 vdd t16_inv
+Xi11 n11 n12 vdd t16_inv
+Xi12 n12 n13 vdd t16_inv
+Xi13 n13 n14 vdd t16_inv
+Xi14 n14 n15 vdd t16_inv
+Xi15 n15 n1  vdd t16_inv
+
+* kick the ring so it starts deterministically
+.ic v(n1)=0.54
+
+.control
+* at 1.8 V the ring beats in ~0.75 ns - 60 ns is plenty
+tran 0.05n 60n uic
+* frequency from 10 clean periods of node n1
+meas tran t1 WHEN v(n1)=0.9 RISE=3
+meas tran t2 WHEN v(n1)=0.9 RISE=13
+let freq = 1/((t2-t1)/10)
+print freq
+* watch the heartbeat yourself:  plot v(n1) v(n2)
+plot v(n1) v(n2)
+.endc
+
+.end
