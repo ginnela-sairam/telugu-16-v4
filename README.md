@@ -94,4 +94,23 @@ make mount
 For a deeply detailed, 34-part explanation of exactly how this chip was designed, the philosophy behind the P-bit, and a full glossary of ASIC design terms, read the **[T-16 Complete Guide](COMPLETE_GUIDE.md)** included in this repository.
 
 ---
-*Built with passion, logic gates, and a touch of thermal noise.*
+
+## 👨‍💻 About the Creator
+
+**Ginnela Someswara Sai Ram Prasad**  
+*Electronics & Communication Engineering Student | VLSI Designer | AI Developer*
+
+The TELUGU-16 architecture is the brainchild of Ginnela Someswara Sai Ram Prasad. Driven by a passion for solving complex engineering challenges through direct logic and strategic problem-solving, this project represents the intersection of deep digital logic design, hardware simulation, and modern open-source silicon manufacturing.
+
+Beyond custom silicon and ASIC design, Ginnela's engineering portfolio spans:
+* **Hardware & IoT:** Proposal architect for a subsurface drainage IoT sanitation grid (MSME Idea Hackathon 6.0).
+* **Research & Academia:** Author of the preprint paper *"A Next-Generation Framework for Ultra-Long-Distance Communications"* (ScienceOpen, 2025) and Phase 2 Qualifier in the highly competitive Viasat Space for Good India Challenge.
+* **AI & Software Development:** Creator of the **EvoSkill AI** web platform and the tilt-responsive **MotionRead** Android application.
+
+**Connect & Explore:**
+* 🌐 Portfolio: [ginnela.in](http://ginnela.in)
+* 🤖 EvoSkill AI: [evoskill.ginnela.in](http://evoskill.ginnela.in)
+* 📧 Open to collaboration on advanced VLSI, IoT, and AI-integrated hardware projects.
+
+---
+*Built with passion, logic gates, and a touch of thermal noise by Ginnela Someswara Sai Ram Prasad.*
