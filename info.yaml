@@ -5,7 +5,7 @@ project:
   description: "A 16-bit RISC SoC with memory-mapped GPIO, timer, and a probabilistic-bit ring-oscillator peripheral."
   language: "Verilog"
   clock_hz: 0
-  tiles: "8x2"
+  tiles: "4x2"
   top_module: "tt_um_telugu_t16"
   # Paths are relative to Tiny Tapeout's src/ directory. Keeping the RTL in
   # its existing rtl/ directory avoids maintaining a second, stale copy.
