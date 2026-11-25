@@ -1,0 +1,55 @@
+# Tiny Tapeout project information
+project:
+  title: "TELUGU-16 V4.1"
+  author: "Ginnela Someswara Sai Ram Prasad"
+  description: "A 16-bit RISC SoC with memory-mapped GPIO, timer, and a probabilistic-bit ring-oscillator peripheral."
+  language: "Verilog"
+  clock_hz: 0
+  tiles: "8x2"
+  top_module: "tt_um_telugu_t16"
+  # Paths are relative to Tiny Tapeout's src/ directory. Keeping the RTL in
+  # its existing rtl/ directory avoids maintaining a second, stale copy.
+  source_files:
+    - "../rtl/tt_um_telugu_t16.v"
+    - "../rtl/t16_soc.v"
+    - "../rtl/t16_cpu.v"
+    - "../rtl/t16_rom.v"
+    - "../rtl/t16_ram.v"
+    - "../rtl/t16_gpio.v"
+    - "../rtl/t16_ro.v"
+
+# Pin names follow the Tiny Tapeout YAML v6 schema. uio pins are outputs
+# in this wrapper (uio_oe is tied high); uio_in is unused.
+pinout:
+  # ui[0] selects external clock (0) or ring-oscillator clock (1).
+  # Keep the selection static while the design is running.
+  ui[0]: "CLKSEL: 0=external clk, 1=ring-oscillator clock"
+  ui[1]: "GPIO input bit 1"
+  ui[2]: "GPIO input bit 2"
+  ui[3]: "GPIO input bit 3"
+  ui[4]: "GPIO input bit 4"
+  ui[5]: "GPIO input bit 5"
+  ui[6]: "GPIO input bit 6"
+  ui[7]: "GPIO input bit 7"
+
+  # Low 8 bits of the program-controlled GPIO output register.
+  uo[0]: "GPIO output bit 0"
+  uo[1]: "GPIO output bit 1"
+  uo[2]: "GPIO output bit 2"
+  uo[3]: "GPIO output bit 3"
+  uo[4]: "GPIO output bit 4"
+  uo[5]: "GPIO output bit 5"
+  uo[6]: "GPIO output bit 6"
+  uo[7]: "GPIO output bit 7"
+
+  # High nibble exposes GPIO[11:8]; low nibble exposes status/RO signals.
+  uio[0]: "Live probabilistic-bit (P-bit) status"
+  uio[1]: "CPU halted status"
+  uio[2]: "CPU sleeping status"
+  uio[3]: "Raw ring-oscillator output (scope tap)"
+  uio[4]: "GPIO output bit 8"
+  uio[5]: "GPIO output bit 9"
+  uio[6]: "GPIO output bit 10"
+  uio[7]: "GPIO output bit 11"
+
+yaml_version: 6
